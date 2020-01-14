@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
 
 class SmallModel(Sequential):
 	def __init__(self, input_shape=(28,28, 1)):
@@ -37,6 +37,7 @@ class SmallModel(Sequential):
 			)
 		)
 		# 10, 10, 32
+		self.add(Flatten())
 		
 		# We finish with two dense layers
 		self.add(
@@ -63,7 +64,7 @@ class SmallModel(Sequential):
 			x=X,
 			y=Y,
 			batch_size=64,
-			epochs=20,
+			epochs=10,
 			verbose=1,
 			validation_split=0.05
 		)
