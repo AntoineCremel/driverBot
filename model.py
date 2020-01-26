@@ -4,7 +4,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
 
 class SmallModel(Sequential):
-	def __init__(self, input_shape=(28,28, 1)):
+	def __init__(self, input_shape=(28,28, 1), output_size=4):
 		super().__init__()
 
 		# Now we add to our model layer by layer
@@ -51,7 +51,7 @@ class SmallModel(Sequential):
 		# And the last layer to get an output of shape 10
 		self.add(
 			Dense(
-				units=10,
+				units=output_size,
 				activation="softmax",
 				use_bias=True
 			)

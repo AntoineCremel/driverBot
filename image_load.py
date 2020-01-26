@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 
 import json
+import numpy as np
 from os import path
 from PIL import Image
 
-"""im = Image.open("lane_images/2020-01-15_07-45-44-394816.jpg")
-
-im.show()"""
-
-def read_training(format_size=(32,32), dir_name="lane_images", label_file="labels.json", extrapolate=True):
+def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labels.json", extrapolate=True):
 	"""
 	read_training will go into dir_name and look for a file called 
 	labels.json. It will then open all the images named in labels.json
@@ -24,10 +21,49 @@ def read_training(format_size=(32,32), dir_name="lane_images", label_file="label
 	with open(pathname, 'r') as lab:
 		labels = json.load(lab)
 
-	for image_name, label in labels:
+	image_list = []
+	label_list = []
+	for image_name, label in labels.items():
 		# First open the image in the right format
 		image_file_name = path.join(dir_name, image_name)
 		image = Image.open(image_file_name).resize(format_size)
-		
+		image_list.append(list(image.getdata()))
+		label_list.append(label)
 
-read_training()
+		if extrapolate:
+			mirror_image = image.transpose(method=Image.FLIP_LEFT_RIGHT)
+			image_list.append(list(mirror_image.getdata()))
+			if label == 'B' or label == 'F':
+				label_list.append(label)
+			elif label == 'L':
+				label_list.append('R')
+			elif label == 'R':
+				label_list.append('L')
+			else:
+				raise Exception("Label unknown")
+
+	return np.array(image_list), np.array(label_list)
+
+def format_X(image_list, format):
+	image_list = image_list.reshape(image_list.shape[0], format[0], format[1], image_list.shape[2])
+	return image_list/255
+
+def format_Y(label_list):
+	"""
+	In order to be compatible with a neural network, the labels need to be converted to
+	categorical data.
+	"""
+	categorical_y = []
+	for label in label_list:
+		if label == 'F':
+			categorical_y.append([1, 0, 0, 0])
+		elif label == 'R':
+			categorical_y.append([0, 1, 0, 0])
+		elif label == 'L':
+			categorical_y.append([0, 0, 1, 0])
+		elif label == 'B':
+			categorical_y.append([0, 0, 0, 1])
+		else:
+			raise Exception("Label unknown")
+
+	return np.array(categorical_y)
