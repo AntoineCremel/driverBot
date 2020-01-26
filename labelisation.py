@@ -12,15 +12,16 @@ with open(dic_file_name, 'r') as dic_file:
 	label_dic = json.load(dic_file)
 
 file_list = os.listdir(data_dir)
-print(file_list)
 for file_name in file_list:
-	if not file_name in label_dic.keys():
+	# Check that our file is indeed a jpg file
+	extension = file_name.split(".")[-1]
+	if extension == "jpg" and not file_name in label_dic.keys():
 		# Open and show the image
 		image_file_name = os.path.join(data_dir, file_name)
 		image = Image.open(image_file_name)
 		image.show()
 		# Save the label to the dic
-		label = input("What label do you wish to give to this image? F, R, L, B for directon labels, X to quit ")
+		label = input("Image {}. F, R, L, B for directon labels, X to quit ".format(len(label_dic)))
 		if label in ['F', 'R', 'L', 'B']:
 			label_dic[file_name] = label
 		elif label == 'X':
