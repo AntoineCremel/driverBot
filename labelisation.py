@@ -2,7 +2,7 @@
 
 import os
 import json
-from PIL import Image
+from PIL import Image, ImageFilter
 
 data_dir = "lane_images"
 
@@ -12,6 +12,7 @@ with open(dic_file_name, 'r') as dic_file:
 	label_dic = json.load(dic_file)
 
 file_list = os.listdir(data_dir)
+
 for file_name in file_list:
 	# Check that our file is indeed a jpg file
 	extension = file_name.split(".")[-1]
