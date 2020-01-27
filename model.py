@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 
 class SmallModel(Sequential):
 	def __init__(self, input_shape=(28,28, 1), output_size=4):
@@ -25,6 +25,9 @@ class SmallModel(Sequential):
 				strides=None,
 				padding="valid"
 			)
+		)
+		self.add(
+			Dropout(0.25)
 		)
 		# At ths point, each image has been converted to a shape of 13, 13, 32
 		self.add(
@@ -54,6 +57,16 @@ class SmallModel(Sequential):
 				activation="relu"
 			)
 		)
+		self.add(
+			MaxPooling2D(
+				pool_size=(2,2),
+				strides=None,
+				padding="valid"
+			)
+		)
+		self.add(
+			Dropout(0.25)
+		)
 		# 10, 10, 32
 		self.add(Flatten())
 		
@@ -64,6 +77,9 @@ class SmallModel(Sequential):
 				activation="relu",
 				use_bias=True,
 			)
+		)
+		self.add(
+			Dropout(0.25)
 		)
 
 		# And the last layer to get an output of shape 10
@@ -84,5 +100,5 @@ class SmallModel(Sequential):
 			batch_size=64,
 			epochs=30,
 			verbose=1,
-			validation_split=0.05
+			validation_split=0.1
 		)

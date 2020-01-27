@@ -9,7 +9,8 @@ def train(dir_name="lane_images"):
 	X = image_load.format_X(images, [64, 64])
 	Y = image_load.format_Y(labels)
 
-	rnn = model.SmallModel(input_shape=(64, 64, 3))
-	rnn.fit(X, Y)
+	cnn = model.SmallModel(input_shape=(64, 64, 3))
+	cnn.fit(X, Y)
+	cnn.summary()
 
 train()
