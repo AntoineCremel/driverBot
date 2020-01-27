@@ -10,10 +10,11 @@ class SmallModel(Sequential):
 		# Now we add to our model layer by layer
 		self.add(
 			Conv2D(
-				filters=16,
+				filters=32,
 				kernel_size=(3,3),
 				strides=(1,1),
 				padding="valid",
+				activation="relu",
 				input_shape=input_shape
 			)
 		)
@@ -25,15 +26,32 @@ class SmallModel(Sequential):
 				padding="valid"
 			)
 		)
-		# At ths point, each image has been converted to a shape of 13, 13, 16
+		# At ths point, each image has been converted to a shape of 13, 13, 32
+		self.add(
+			Conv2D(
+				filters=64,
+				kernel_size=(3,3),
+				strides=(1,1),
+				padding="valid",
+				activation="relu"
+			)
+		)
+
+		self.add(
+			MaxPooling2D(
+				pool_size=(2,2),
+				strides=None,
+				padding="valid"
+			)
+		)
 
 		self.add(
 			Conv2D(
-				filters=32,
+				filters=128,
 				kernel_size=(4,4),
 				strides=(1,1),
 				padding="valid",
-				input_shape=input_shape
+				activation="relu"
 			)
 		)
 		# 10, 10, 32
@@ -64,7 +82,7 @@ class SmallModel(Sequential):
 			x=X,
 			y=Y,
 			batch_size=64,
-			epochs=10,
+			epochs=30,
 			verbose=1,
 			validation_split=0.05
 		)
