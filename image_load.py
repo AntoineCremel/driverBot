@@ -3,7 +3,7 @@
 import json
 import numpy as np
 from os import path
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labels.json", extrapolate=True):
 	"""
@@ -48,6 +48,18 @@ def format_X(image_list, format):
 	image_list = image_list.reshape(image_list.shape[0], format[0], format[1], image_list.shape[2])
 	return image_list/255
 
+def label_to_cat(label):
+	if label == 'F':
+			return [1, 0, 0, 0]
+		elif label == 'R':
+			return [0, 1, 0, 0]
+		elif label == 'L':
+			 return [0, 0, 1, 0]
+		elif label == 'B':
+			return [0, 0, 0, 1]
+		else:
+			raise Exception("Label unknown")
+
 def format_Y(label_list):
 	"""
 	In order to be compatible with a neural network, the labels need to be converted to
@@ -55,15 +67,6 @@ def format_Y(label_list):
 	"""
 	categorical_y = []
 	for label in label_list:
-		if label == 'F':
-			categorical_y.append([1, 0, 0, 0])
-		elif label == 'R':
-			categorical_y.append([0, 1, 0, 0])
-		elif label == 'L':
-			categorical_y.append([0, 0, 1, 0])
-		elif label == 'B':
-			categorical_y.append([0, 0, 0, 1])
-		else:
-			raise Exception("Label unknown")
+		categorical_y.append(label_to_cat(label))
 
 	return np.array(categorical_y)
