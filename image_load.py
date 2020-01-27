@@ -50,15 +50,15 @@ def format_X(image_list, format):
 
 def label_to_cat(label):
 	if label == 'F':
-			return [1, 0, 0, 0]
-		elif label == 'R':
-			return [0, 1, 0, 0]
-		elif label == 'L':
-			 return [0, 0, 1, 0]
-		elif label == 'B':
-			return [0, 0, 0, 1]
-		else:
-			raise Exception("Label unknown")
+		return [1, 0, 0, 0]
+	if label == 'R':
+		return [0, 1, 0, 0]
+	if label == 'L':
+			return [0, 0, 1, 0]
+	if label == 'B':
+		return [0, 0, 0, 1]
+		
+	raise Exception("Label unknown")
 
 def format_Y(label_list):
 	"""
