@@ -27,7 +27,6 @@ def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labe
 		# First open the image in the right format
 		image_file_name = path.join(dir_name, image_name)
 		image = Image.open(image_file_name)
-		image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
 		image = image.resize(format_size)
 		image_list.append(list(image.getdata()))
 		label_list.append(label)
