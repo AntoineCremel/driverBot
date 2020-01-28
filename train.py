@@ -2,7 +2,6 @@
 
 import image_load
 import model
-import h5py
 import os
 
 def save_model(model):
