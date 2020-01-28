@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.7
 
 from tensorflow.keras.datasets import mnist
 from model import SmallModel

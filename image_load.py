@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.7
 
 import json
 import numpy as np
@@ -11,7 +11,7 @@ def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labe
 	labels.json. It will then open all the images named in labels.json
 	and convert them to images of size format_size.
 
-	If extrapolate, then each image will be duplicated to its mirror version.
+	If extrapolate is True, then each image will be duplicated to its mirror version.
 		- The mirrors of images labelled left or right will be labelled with their opposite
 		direction
 		- The mirrors of images labelled forward or backward will be labelled with the same
@@ -55,11 +55,23 @@ def label_to_cat(label):
 	if label == 'R':
 		return [0, 1, 0, 0]
 	if label == 'L':
-			return [0, 0, 1, 0]
+		return [0, 0, 1, 0]
 	if label == 'B':
 		return [0, 0, 0, 1]
 		
 	raise Exception("Label unknown")
+
+def cat_to_label(cat):
+	result = np.argmax(cat)
+
+	if result == 0:
+		return 'F'
+	if result == 1:
+		return 'R'
+	if result == 2:
+		return 'L'
+	if result == 3:
+		return 'B'
 
 def format_Y(label_list):
 	"""
