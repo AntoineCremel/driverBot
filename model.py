@@ -4,6 +4,7 @@ import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 import keras as K
+import image_load
 
 class SmallModel(Sequential):
 	def __init__(self, input_shape=(64, 64, 3), output_size=4, name="Simple CNN"):
@@ -110,7 +111,8 @@ class SmallModel(Sequential):
 		result = super().predict(
 			x=X
 		)
-		# Convert the result
+		
+		return result
 
 def load_model(directory="model"):
 	arch_path = os.path.join(directory, "architecture.json")
