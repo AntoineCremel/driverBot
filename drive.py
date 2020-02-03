@@ -24,7 +24,9 @@ def auto_drive(neural, past_influence=0.2, frame_rate=10):
     while True:
         start_time = time.time()
         image = cam.camera.get_image()
-        label = neural.predict(image)
+        # Resize the image to make it compatible with our network
+        
+        label = neural.predict(image)[0]
 
         # Now we produce an average of devision
         choice = (1-past_influence) * label + past_influence * prev_average
@@ -43,3 +45,5 @@ def auto_drive(neural, past_influence=0.2, frame_rate=10):
         elapsed = end_time - start_time()
         frame_duration = 1/frame_rate
         remaining = frame_duration - elapsed
+        if remaining >= 0:
+            time.sleep(remaining)

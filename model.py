@@ -7,7 +7,7 @@ import keras as K
 import image_load
 
 class SmallModel(Sequential):
-	def __init__(self, input_shape=(64, 64, 3), output_size=4, name="Simple CNN"):
+	def __init__(self, input_shape=(64, 36, 3), output_size=4, name="Simple CNN"):
 		super().__init__()
 
 		# Now we add to our model layer by layer
@@ -101,7 +101,7 @@ class SmallModel(Sequential):
 			x=X,
 			y=Y,
 			batch_size=64,
-			epochs=45,
+			epochs=60,
 			verbose=1,
 			validation_split=0.1
 		)
@@ -115,13 +115,14 @@ class SmallModel(Sequential):
 		return result
 
 def load_model(directory="model"):
-	arch_path = os.path.join(directory, "architecture.json")
+	"""arch_path = os.path.join(directory, "architecture.json")
 	with open(arch_path, 'r') as arch_file:
 		json_string = arch_file.read()
-	model = K.models.model_from_json(json_string, custom_objects={"SmallModel": SmallModel})
+	model = K.models.model_from_json(json_string, custom_objects={"SmallModel": SmallModel})"""
+	cnn = SmallModel()
 	weight_path = os.path.join(directory, "weights.h5")
-	model.load_weights(weight_path)
+	cnn.load_weights(weight_path)
 
-	model.compile(optimizer="Adam", loss="categorical_crossentropy", metrics=["accuracy"])
+	cnn.compile(optimizer="Adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
-	return model
+	return cnn

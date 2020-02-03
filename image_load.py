@@ -3,6 +3,7 @@
 import json
 import numpy as np
 from os import path
+import pygame.image
 from PIL import Image, ImageFilter
 
 def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labels.json", extrapolate=True):
@@ -48,6 +49,15 @@ def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labe
 def format_X(image_list, format):
 	image_list = image_list.reshape(image_list.shape[0], format[0], format[1], image_list.shape[2])
 	return image_list/255
+
+def format_single_image(from_camera):
+	from_camera_string = pygame.image.tostring(from_camera)
+	image = Image.fromstring(from_camera_string)
+	#Format the image to the appropriate size
+	image = image.resize((64, 36))
+	image_list = np.array([list(image.getdata())])
+	image_list = image_load.format_X(image_list, [64, 36])
+	return image_list
 
 def label_to_cat(label):
 	if label == 'F':
