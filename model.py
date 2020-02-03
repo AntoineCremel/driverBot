@@ -101,7 +101,7 @@ class SmallModel(Sequential):
 			x=X,
 			y=Y,
 			batch_size=64,
-			epochs=30,
+			epochs=45,
 			verbose=1,
 			validation_split=0.1
 		)

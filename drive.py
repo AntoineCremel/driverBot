@@ -8,7 +8,7 @@ import robotCode.motor as motor
 import time
 import image_load
 
-def auto_drive(neural, past_influence=0.2):
+def auto_drive(neural, past_influence=0.2, frame_rate=10):
     """
     Function to drive automatically using the image from the camera.
     """
@@ -38,3 +38,8 @@ def auto_drive(neural, past_influence=0.2):
             mot.left()
         elif label == "B":
             mot.backward()
+
+        end_time = time.time()
+        elapsed = end_time - start_time()
+        frame_duration = 1/frame_rate
+        remaining = frame_duration - elapsed
