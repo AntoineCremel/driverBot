@@ -31,4 +31,10 @@ def auto_drive(neural, past_influence=0.2):
         # Convert our choice into a label
         label = image_load.cat_to_label(choice)
         if label == "F":
-            pass
+            mot.forward()
+        elif label == "R":
+            mot.right()
+        elif label == "L":
+            mot.left()
+        elif label == "B":
+            mot.backward()
