@@ -56,7 +56,7 @@ def format_single_image(from_camera):
 	#Format the image to the appropriate size
 	image = image.resize((64, 36))
 	image_list = np.array([list(image.getdata())])
-	image_list = image_load.format_X(image_list, [64, 36])
+	image_list = format_X(image_list, [64, 36])
 	return image_list
 
 def label_to_cat(label):
