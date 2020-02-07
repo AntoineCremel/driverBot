@@ -26,15 +26,15 @@ class Motor: #Define motor class
 		global pwm_ENA
 		global pwm_ENB
 		GPIO.setup(self.ENA_Pin,GPIO.OUT,initial=GPIO.HIGH)
-			GPIO.setup(self.IN1_Pin,GPIO.OUT,initial=GPIO.LOW)
-			GPIO.setup(self.IN2_Pin,GPIO.OUT,initial=GPIO.LOW)
-			GPIO.setup(self.ENB_Pin,GPIO.OUT,initial=GPIO.HIGH)
-			GPIO.setup(self.IN3_Pin,GPIO.OUT,initial=GPIO.LOW)
-			GPIO.setup(self.IN4_Pin,GPIO.OUT,initial=GPIO.LOW)
+		GPIO.setup(self.IN1_Pin,GPIO.OUT,initial=GPIO.LOW)
+		GPIO.setup(self.IN2_Pin,GPIO.OUT,initial=GPIO.LOW)
+		GPIO.setup(self.ENB_Pin,GPIO.OUT,initial=GPIO.HIGH)
+		GPIO.setup(self.IN3_Pin,GPIO.OUT,initial=GPIO.LOW)
+		GPIO.setup(self.IN4_Pin,GPIO.OUT,initial=GPIO.LOW)
 
 		#Set the PWM pin and frequency is 2000hz
-			pwm_ENA = GPIO.PWM(self.ENA_Pin, 2000)
-			pwm_ENB = GPIO.PWM(self.ENB_Pin, 2000)
+		pwm_ENA = GPIO.PWM(self.ENA_Pin, 2000)
+		pwm_ENB = GPIO.PWM(self.ENB_Pin, 2000)
 		pwm_ENA.start(0)
 		pwm_ENB.start(0)
 

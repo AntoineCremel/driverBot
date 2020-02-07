@@ -15,13 +15,13 @@ def save_model(model):
 
 def train(dir_name="lane_images"):
 	print("Loading images...")
-	images, labels = image_load.read_training(format_size=(64, 64), dir_name=dir_name)
+	images, labels = image_load.read_training(format_size=model.standard_format, dir_name=dir_name, grayscale=False)
 	
-	X = image_load.format_X(images, [64, 64])
+	X = image_load.format_X(images, model.standard_format)
 	Y = image_load.format_Y(labels)
 
 	print("Training model...")
-	cnn = model.SmallModel(input_shape=(64, 64, 3))
+	cnn = model.SmallModel(input_shape=model.standard_format + (3,))
 	cnn.fit(X, Y)
 	cnn.summary()
 
