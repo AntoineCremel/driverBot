@@ -1,0 +1,13 @@
+Algorithme
+
+Boucle infinie, fréquence de 10 boucles par seconde:
+	I/ La caméra prend une photo
+		L'image est reçue via pygame et est ensuite convertie au bon format pour ête lue par OpenCV
+	II/ Conversion via le système de détection de lignes
+		La photo est remplacée par une photo où les détails ont été effacés et remplacés par un fond noir, et les lignes du bord de la route ont été mise en avant sous forme de lignes de couleur vive. La photo est ensuite réduite et convertie en teintes de gris.
+	III/ La photo est envoyée au réseau de neurone de convolution
+		Ce réseau est capable d'identifier les formes adoptées par les lignes du bord de la route et d'en déduire la direction à prendre.
+	IV/ Le résultat du réseau de neurone est mis à la moyenne mobile
+		On compare le résultat trouvé aux résultats trouvés précedement grâce à la formule de la moyenne mobile. En substance, cela fait que si la voiture a vu plusieurs fois de suite des images lui disant d'aller vers l'avant et qu'elle tombe sur une image qui est interprétée par le réseau comme une image où il faut choisir de tourner à gauche sans certitude forte, la voiture va commencer par continuer d'avancer. Si, à l'image suivante, le réseau persiste à vouloir tourner, c'est qu'il est peu probable que nous soyions en présence d'un outlier, la voiture peut donc changer de direction.
+	V/ Les roues s'activent en fonction de la direction qui est décidée
+		Pour ce prototype, nous gardons une vitesse relativement faible afin de diminuer les problèmes d'erreurs d'appréciation. 

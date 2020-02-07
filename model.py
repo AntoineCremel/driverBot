@@ -2,23 +2,38 @@
 
 import os
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
-import keras as K
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
 import image_load
 
-class SmallModel(Sequential):
-	def __init__(self, input_shape=(64, 36, 3), output_size=4, name="Simple CNN"):
-		super().__init__()
+standard_format = (64, 36)
+input_shape = standard_format + (3,)
 
+class SmallModel(Sequential):
+	def __init__(self, input_shape=input_shape, output_size=4, name="Simple CNN"):
+		super().__init__()
+		self.add(
+			BatchNormalization(
+				axis=1,
+				input_shape=input_shape
+			)
+		)
 		# Now we add to our model layer by layer
 		self.add(
 			Conv2D(
 				filters=32,
 				kernel_size=(3,3),
 				strides=(1,1),
-				padding="valid",
-				activation="relu",
-				input_shape=input_shape
+				padding="same",
+				activation="relu"
+			)
+		)
+		self.add(
+			Conv2D(
+				filters=32,
+				kernel_size=(3,3),
+				strides=(1,1),
+				padding="same",
+				activation="relu"
 			)
 		)
 
@@ -38,7 +53,7 @@ class SmallModel(Sequential):
 				filters=64,
 				kernel_size=(3,3),
 				strides=(1,1),
-				padding="valid",
+				padding="same",
 				activation="relu"
 			)
 		)
@@ -54,9 +69,9 @@ class SmallModel(Sequential):
 		self.add(
 			Conv2D(
 				filters=128,
-				kernel_size=(4,4),
+				kernel_size=(3,3),
 				strides=(1,1),
-				padding="valid",
+				padding="same",
 				activation="relu"
 			)
 		)
@@ -76,7 +91,7 @@ class SmallModel(Sequential):
 		# We finish with two dense layers
 		self.add(
 			Dense(
-				units=128,
+				units=64,
 				activation="relu",
 				use_bias=True,
 			)
@@ -101,9 +116,10 @@ class SmallModel(Sequential):
 			x=X,
 			y=Y,
 			batch_size=64,
-			epochs=60,
+			epochs=20,
 			verbose=1,
-			validation_split=0.1
+			validation_split=0.2,
+			shuffle=True
 		)
 	
 	def predict(self, X):

@@ -6,7 +6,7 @@ from os import path
 import pygame.image
 from PIL import Image, ImageFilter
 
-def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labels.json", extrapolate=True):
+def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labels.json", extrapolate=True, grayscale=False):
 	"""
 	read_training will go into dir_name and look for a file called 
 	labels.json. It will then open all the images named in labels.json
@@ -28,7 +28,10 @@ def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labe
 		# First open the image in the right format
 		image_file_name = path.join(dir_name, image_name)
 		image = Image.open(image_file_name)
+		# Resize it and adapt it to our network
 		image = image.resize(format_size)
+		if grayscale:
+			image = image.convert("L")
 		image_list.append(list(image.getdata()))
 		label_list.append(label)
 
@@ -47,7 +50,10 @@ def read_training(format_size=(16, 16), dir_name="lane_images", label_file="labe
 	return np.array(image_list), np.array(label_list)
 
 def format_X(image_list, format):
-	image_list = image_list.reshape(image_list.shape[0], format[0], format[1], image_list.shape[2])
+	n_channels = 1
+	if len(image_list.shape) == 3:
+		n_channels = image_list.shape[2]
+	image_list = image_list.reshape(image_list.shape[0], format[0], format[1], n_channels)
 	return image_list/255
 
 def format_single_image(from_camera):
@@ -93,3 +99,12 @@ def format_Y(label_list):
 		categorical_y.append(label_to_cat(label))
 
 	return np.array(categorical_y)
+
+def format_one_file(path, dimensions, show=False):
+	image = Image.open(path)
+	if show:
+		image.show()
+	image = image.resize(dimensions)
+	image_list = np.array([list(image.getdata())])
+	image_list = format_X(image_list, dimensions)
+	return image_list
