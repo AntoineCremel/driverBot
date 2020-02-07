@@ -2,7 +2,7 @@
 
 import os
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
 import keras as K
 import image_load
 
@@ -11,6 +11,12 @@ class SmallModel(Sequential):
 		super().__init__()
 
 		# Now we add to our model layer by layer
+		self.add(
+			BatchNormalization(
+
+			)
+		)
+
 		self.add(
 			Conv2D(
 				filters=32,
